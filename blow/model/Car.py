@@ -1,4 +1,4 @@
-from model.GameObject import *
+from blow.model.GameObject import *
 
 carWidth = 2.0
 carHeight = 1.0

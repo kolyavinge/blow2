@@ -1,5 +1,5 @@
 import unittest
-from model.GameObject import *
+from blow.model.GameObject import *
 
 class GameObjectTest(unittest.TestCase):
 

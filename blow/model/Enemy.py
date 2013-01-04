@@ -1,4 +1,4 @@
-from model.GameObject import *
+from blow.model.GameObject import *
 
 class Enemy(GameObject):
     

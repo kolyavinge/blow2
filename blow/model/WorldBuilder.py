@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from Box2D import *
-from model.Car import *
-from model.CarMovingStrategy import *
-from model.Enemy import *
-from model.EnemyContactListener import *
-from model.Explosion import *
-from model.ExplosionMovingStrategy import *
-from model.World import *
+from lib.Box2D import *
+from blow.model.Car import *
+from blow.model.CarMovingStrategy import *
+from blow.model.Enemy import *
+from blow.model.EnemyContactListener import *
+from blow.model.Explosion import *
+from blow.model.ExplosionMovingStrategy import *
+from blow.model.World import *
 
 class WorldBuilder(object):
     

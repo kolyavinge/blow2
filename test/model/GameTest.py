@@ -1,5 +1,5 @@
-from model.Explosion import *
-from model.Game import *
+from blow.model.Explosion import *
+from blow.model.Game import *
 import unittest
 
 class GameTest(unittest.TestCase):

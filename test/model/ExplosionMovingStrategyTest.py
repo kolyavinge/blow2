@@ -1,6 +1,6 @@
 import unittest
-from model.GameObject import *
-from model.ExplosionMovingStrategy import *
+from blow.model.GameObject import *
+from blow.model.ExplosionMovingStrategy import *
 
 class ExplosionMovingStrategyTest(unittest.TestCase):
     

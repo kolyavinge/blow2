@@ -1,5 +1,5 @@
-from model.WorldBuilderUtils import buildWorldFromList
-from model.Worlds import worldsList
+from blow.model.WorldBuilderUtils import buildWorldFromList
+from blow.model.Worlds import worldsList
 
 GameState_Continue = 1
 GameState_AllLevelsCompleted = 2

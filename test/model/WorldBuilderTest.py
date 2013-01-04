@@ -1,6 +1,6 @@
-from model.World import WorldError
-from model.Explosion import *
-from model.WorldBuilder import *
+from blow.model.World import WorldError
+from blow.model.Explosion import *
+from blow.model.WorldBuilder import *
 import unittest
 
 class WorldBuilderTest(unittest.TestCase):

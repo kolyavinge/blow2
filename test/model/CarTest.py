@@ -1,5 +1,5 @@
 import unittest
-from model.Car import *
+from blow.model.Car import *
 
 class CarTest(unittest.TestCase):
 

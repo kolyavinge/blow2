@@ -1,8 +1,8 @@
 import unittest
-from model.Car import *
-from model.Enemy import *
-from model.Explosion import *
-from model.World import *
+from blow.model.Car import *
+from blow.model.Enemy import *
+from blow.model.Explosion import *
+from blow.model.World import *
 
 class WorldTest(unittest.TestCase):
 

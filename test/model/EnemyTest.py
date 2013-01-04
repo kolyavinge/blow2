@@ -1,5 +1,5 @@
 import unittest
-from model.Enemy import *
+from blow.model.Enemy import *
 
 class EnemyTest(unittest.TestCase):
 

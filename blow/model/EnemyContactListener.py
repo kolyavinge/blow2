@@ -1,6 +1,6 @@
-from model.Car import Car
-from model.Enemy import Enemy
-from Box2D import b2ContactListener
+from blow.model.Car import Car
+from blow.model.Enemy import Enemy
+from lib.Box2D import b2ContactListener
 
 class EnemyContactListener(b2ContactListener):
 

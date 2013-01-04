@@ -1,4 +1,4 @@
-from model.WorldBuilder import *
+from blow.model.WorldBuilder import *
 
 def buildWorldFromList(worldList):
     __validateWorldList(worldList)

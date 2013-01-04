@@ -1,5 +1,5 @@
 import unittest
-from model.WorldBuilderUtils import buildWorldFromList
+from blow.model.WorldBuilderUtils import buildWorldFromList
 
 class WorldBuilderUtilsTest(unittest.TestCase):
 

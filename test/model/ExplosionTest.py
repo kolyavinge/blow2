@@ -1,5 +1,5 @@
 import unittest
-from model.Explosion import *
+from blow.model.Explosion import *
 
 class ExplosionTest(unittest.TestCase):
 
