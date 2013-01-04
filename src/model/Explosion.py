@@ -1,6 +1,6 @@
 ExplosionVolume_Low = 3.5
 ExplosionVolume_Normal = 4.0
-ExplosionVolume_Hight = 4.5
+ExplosionVolume_Hight = 4.8
 
 class Explosion(object):
     
@@ -18,7 +18,7 @@ class Explosion(object):
     def blow(self):
         if not self.blowing:
             self.blowing = True
-            vector = (0, ExplosionVolume_Hight)
+            vector = (0, self.volume)
             position = (self.getX(), self.getY())
             self.blowingObject.blow(vector, position)
         else:

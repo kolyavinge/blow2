@@ -3,10 +3,9 @@
 
 <pydev_project>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
-<path>/blow2</path>
 <path>/blow2/src</path>
-<path>/blow2/test</path>
 <path>/blow2/lib</path>
+<path>/blow2/test</path>
 </pydev_pathproperty>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">python2.7</pydev_property>

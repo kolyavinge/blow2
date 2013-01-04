@@ -21,6 +21,8 @@ class Car(GameObject):
     def blow(self, vector, position):
         if not self.blowing:
             self.blowing = True
+            mass = self.box2dCarBody.GetMass()
+            vector = (mass * vector[0], mass * vector[1])
             self.box2dCarBody.ApplyForce(vector, position)
         else:
             raise CarError('you cant blow blowing car')

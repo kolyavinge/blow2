@@ -1,7 +1,7 @@
 import unittest
 from model.GameObject import *
 from model.Car import *
-from model.CarMovingStrategy import *
+from model.CarMovingStrategy import CarMovingStrategy
 
 class CarMovingStrategyTest(unittest.TestCase):
 

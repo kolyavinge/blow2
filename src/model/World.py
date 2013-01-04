@@ -9,18 +9,16 @@ class World(object):
         self.explosion = explosion
 
     def update(self):
-        self.box2dWorld.Step(1.0 / 60.0, 1, 1)
+        self.box2dWorld.Step(1.0 / 1.0, 1, 1)
 
     def isCompleted(self):
-        return self.car.isBlowed() and self.car.isSleeping() and self.getDestroyedEnemiesCount() == 0
+        return self.car.isBlowed() and self.car.isSleeping() and self.allEnemiesDestroyed()
 
-    def getDestroyedEnemiesCount(self):
-        count = 0
+    def allEnemiesDestroyed(self):
+        result = True
         for enemy in self.enemies:
-            if enemy.isDestroyed():
-                count += 1
-                
-        return count
+            result = result and enemy.isDestroyed()
+        return result
 
     def getCar(self):
         return self.car
@@ -39,3 +37,7 @@ class World(object):
     
     def getHeight(self):
         return self.height
+
+class WorldError(RuntimeError):
+    pass
+

@@ -12,6 +12,12 @@ class GameObject(object):
     def getY(self):
         return self.y
     
+    def getCenterX(self):
+        return self.x + self.width / 2.0
+    
+    def getCenterY(self):
+        return self.y + self.height / 2.0
+    
     def getWidth(self):
         return self.width
     

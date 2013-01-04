@@ -31,7 +31,7 @@ class CarTest(unittest.TestCase):
         position = (1, 0)
         car.blow(vector, position)
         self.assertTrue(car.isBlowed())
-        self.assertEquals(vector, body.vector)
+        self.assertEquals((0, 2), body.vector)
         self.assertEquals(position, body.position)
         
     def testTwiceBlow(self):
@@ -72,6 +72,9 @@ class StubBox2dCarBody(object):
     
     def setPosition(self, pos):
         pass
+    
+    def GetMass(self):
+        return 2.0
     
     def ApplyForce(self, vector, position):
         self.vector = vector

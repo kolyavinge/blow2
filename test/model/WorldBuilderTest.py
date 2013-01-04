@@ -1,6 +1,7 @@
-import unittest
+from model.World import WorldError
 from model.Explosion import *
 from model.WorldBuilder import *
+import unittest
 
 class WorldBuilderTest(unittest.TestCase):
 
@@ -35,6 +36,14 @@ class WorldBuilderTest(unittest.TestCase):
         self.assertEquals(2, world.getEnemies()[1].getWidth())
         self.assertEquals(1, world.getEnemies()[1].getHeight())
 
+    def testEnemyOutOfWorld(self):
+        builder = WorldBuilder()
+        builder.setSize(10, 20)
+        self.assertRaises(WorldError, lambda: builder.addEnemy(-1, 5, 1, 2))
+        self.assertRaises(WorldError, lambda: builder.addEnemy(1, -5, 1, 2))
+        self.assertRaises(WorldError, lambda: builder.addEnemy(9, 5, 2, 2))
+        self.assertRaises(WorldError, lambda: builder.addEnemy(1, 19, 1, 2))
+
     def testRightWall(self):
         builder = WorldBuilder()
         builder.setSize(20, 100)
@@ -62,7 +71,89 @@ class WorldBuilderTest(unittest.TestCase):
         for _ in range(0, 100):
             world.update()
             carXPositions.append(world.getCar().getX())
-        maxX = max(carXPositions)
-        self.assertTrue(maxX > 0)
+        minX = min(carXPositions)
+        self.assertTrue(minX > 0)
         
+    def testHightExplosion(self):
+        builder = WorldBuilder()
+        builder.setSize(20, 100)
+        world = builder.buildWorld()
+        world.getExplosion().setVolume(ExplosionVolume_Hight)
+        world.getExplosion().blow()
+        carY = []
+        for _ in range(0, 100):
+            world.update()
+            carY.append(world.getCar().getY())
+        maxCarY = max(carY)
+        self.assertCarY(maxCarY, 9.0, 10.0)
         
+    def testNormalExplosion(self):
+        builder = WorldBuilder()
+        builder.setSize(20, 100)
+        world = builder.buildWorld()
+        world.getExplosion().setVolume(ExplosionVolume_Normal)
+        world.getExplosion().blow()
+        carY = []
+        for _ in range(0, 100):
+            world.update()
+            carY.append(world.getCar().getY())
+        maxCarY = max(carY)
+        self.assertCarY(maxCarY, 6.0, 7.5)
+    
+    def testLowExplosion(self):
+        builder = WorldBuilder()
+        builder.setSize(20, 100)
+        world = builder.buildWorld()
+        world.getExplosion().setVolume(ExplosionVolume_Low)
+        world.getExplosion().blow()
+        carY = []
+        for _ in range(0, 100):
+            world.update()
+            carY.append(world.getCar().getY())
+        maxCarY = max(carY)
+        self.assertCarY(maxCarY, 3.0, 5.0)
+        
+    def assertCarY(self, y, left, right):
+        self.assertTrue(left <= y and y <= right, '{0} <= {1} <= {2}'.format(left, y, right))
+        
+    def testEnemyDestroy(self):
+        builder = WorldBuilder()
+        builder.setSize(10, 10)
+        builder.addEnemy(5, 8, 1, 1)
+        world = builder.buildWorld()
+        world.getExplosion().setVolume(ExplosionVolume_Hight)
+        world.getExplosion().blow()
+        for _ in range(0, 100):
+            world.update()
+        self.assertTrue(world.allEnemiesDestroyed())
+        self.assertEquals(1, world.getEnemiesCount())
+        self.assertEquals(5, world.getEnemies()[0].getX())
+        self.assertEquals(8, world.getEnemies()[0].getY())
+        
+    def testMoveCarInLeft(self):
+        builder = WorldBuilder()
+        builder.setSize(10, 10)
+        world = builder.buildWorld()
+        world.getCar().move(-100)
+        self.assertEquals(0, world.getCar().getX())
+    
+    def testMoveCarInRight(self):
+        builder = WorldBuilder()
+        builder.setSize(10, 10)
+        world = builder.buildWorld()
+        world.getCar().move(100)
+        self.assertEquals(8, world.getCar().getX())
+        
+    def testMoveExplosionInLeft(self):
+        builder = WorldBuilder()
+        builder.setSize(10, 10)
+        world = builder.buildWorld()
+        world.getExplosion().move(-100)
+        self.assertEquals(4, world.getExplosion().getX())
+        
+    def testMoveExplosionInRight(self):
+        builder = WorldBuilder()
+        builder.setSize(10, 10)
+        world = builder.buildWorld()
+        world.getExplosion().move(100)
+        self.assertEquals(6, world.getExplosion().getX())

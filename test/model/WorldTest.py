@@ -22,7 +22,7 @@ class WorldTest(unittest.TestCase):
         self.assertEquals(explosion, world.getExplosion())
         self.assertFalse(world.isCompleted())
 
-    def testGetDestoyedEnemiesCount(self):
+    def testAllEnemiesDestroyed(self):
         box2dWorld = StubBox2dWorld()
         car = Car(StubBox2dCarBody(), None)
         enemy1 = Enemy(0, 5, 1, 1)
@@ -30,11 +30,11 @@ class WorldTest(unittest.TestCase):
         enemies = [enemy1, enemy2]
         explosion = Explosion(1)
         world = World(10, 20, box2dWorld, car, enemies, explosion)
-        self.assertEquals(0, world.getDestroyedEnemiesCount())
+        self.assertFalse(world.allEnemiesDestroyed())
         enemy1.destroy()
-        self.assertEquals(1, world.getDestroyedEnemiesCount())
+        self.assertFalse(world.allEnemiesDestroyed())
         enemy2.destroy()
-        self.assertEquals(2, world.getDestroyedEnemiesCount())
+        self.assertTrue(world.allEnemiesDestroyed())
 
     def testWorldUpdate(self):
         box2dWorld = StubBox2dWorld()
