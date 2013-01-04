@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from Box2D import *
 from model.Car import *
 from model.CarMovingStrategy import *
@@ -15,20 +17,10 @@ class WorldBuilder(object):
     def buildWorld(self):
         box2dWorld = self.createBox2dWorld()
         self.createGroundAndWalls(box2dWorld)
-        
-        explosion = Explosion(self.worldWidth / 2.0)
-        
-        box2dCarBody = self.createCarBody(box2dWorld)
-        ms = CarMovingStrategy(self.worldWidth, explosion)
-        car = Car(box2dCarBody, ms)
-        box2dCarBody.SetUserData(car)
-        
-        explosion.setBlowingObject(car)
-        explosion.setMovingStrategy(ExplosionMovingStrategy(car))
-        
-        for enemy in self.enemies:
-            self.createEnemyBody(box2dWorld, enemy)
-        
+        explosion = self.createBlankExplosion()
+        car = self.createCar(box2dWorld, explosion)
+        self.bindCarToExplosion(explosion, car)
+        self.createEnemies(box2dWorld)
         self.createEnemyContactListener(box2dWorld)
         
         return World(self.worldWidth, self.worldHeight, box2dWorld, car, self.enemies, explosion)
@@ -61,6 +53,16 @@ class WorldBuilder(object):
         shape.SetAsBox(1.0, self.worldHeight)
         box2dWorld.CreateBody(bodyDef).CreateShape(shape)
     
+    def createBlankExplosion(self):
+        return Explosion(self.worldWidth / 2.0)
+    
+    def createCar(self, box2dWorld, explosion):
+        box2dCarBody = self.createCarBody(box2dWorld)
+        car = Car(box2dCarBody, CarMovingStrategy(self.worldWidth, explosion))
+        box2dCarBody.SetUserData(car)
+        
+        return car
+    
     def createCarBody(self, box2dWorld):
         bodyDef = b2BodyDef()
         bodyDef.position = (self.worldWidth / 2.0, carHeight / 2.0)
@@ -72,6 +74,14 @@ class WorldBuilder(object):
         box2dCarBody.SetMassFromShapes()
         
         return box2dCarBody
+    
+    def bindCarToExplosion(self, explosion, car):
+        explosion.setBlowingObject(car)
+        explosion.setMovingStrategy(ExplosionMovingStrategy(car))
+    
+    def createEnemies(self, box2dWorld):
+        for enemy in self.enemies:
+            self.createEnemyBody(box2dWorld, enemy)
     
     def createEnemyBody(self, box2dWorld, enemy):
         bodyDef = b2BodyDef()
@@ -95,9 +105,10 @@ class WorldBuilder(object):
         box2dWorld.CreateJoint(joint)
     
     def createEnemyContactListener(self, box2dWorld):
-        # enemyContactListener must be self-variable, otherwise Box2D will be crashed
-        self.enemyContactListener = EnemyContactListener()
-        box2dWorld.SetContactListener(self.enemyContactListener)
+        # для того чтобы enemyContactListener раньше времени не затерся сборщиком мусора
+        # помещаем его в объект box2dWorld
+        box2dWorld.enemyContactListener = EnemyContactListener()
+        box2dWorld.SetContactListener(box2dWorld.enemyContactListener)
         
     def setSize(self, width, height):
         self.worldWidth = width

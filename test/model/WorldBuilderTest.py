@@ -4,6 +4,9 @@ from model.WorldBuilder import *
 import unittest
 
 class WorldBuilderTest(unittest.TestCase):
+    
+    def assertCarY(self, y, left, right):
+        self.assertTrue(left <= y and y <= right, '{0} <= {1} <= {2}'.format(left, y, right))
 
     def testBuild(self):
         builder = WorldBuilder()
@@ -19,7 +22,6 @@ class WorldBuilderTest(unittest.TestCase):
         
         self.assertEquals(4, world.getCar().getX())
         self.assertEquals(0, world.getCar().getY())
-#        self.assertTrue(world.getCar().isSleeping())
         self.assertFalse(world.getCar().isBlowed())
         
         self.assertEquals(5, world.getExplosion().getX())
@@ -113,9 +115,6 @@ class WorldBuilderTest(unittest.TestCase):
         maxCarY = max(carY)
         self.assertCarY(maxCarY, 3.0, 5.0)
         
-    def assertCarY(self, y, left, right):
-        self.assertTrue(left <= y and y <= right, '{0} <= {1} <= {2}'.format(left, y, right))
-        
     def testEnemyDestroy(self):
         builder = WorldBuilder()
         builder.setSize(10, 10)
@@ -129,6 +128,7 @@ class WorldBuilderTest(unittest.TestCase):
         self.assertEquals(1, world.getEnemiesCount())
         self.assertEquals(5, world.getEnemies()[0].getX())
         self.assertEquals(8, world.getEnemies()[0].getY())
+        self.assertTrue(world.isCompleted())
         
     def testMoveCarInLeft(self):
         builder = WorldBuilder()
