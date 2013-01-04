@@ -8,7 +8,7 @@ class WorldTest(unittest.TestCase):
 
     def testConstructor(self):
         box2dWorld = StubBox2dWorld()
-        car = Car(StubBox2dCarBody(), None)
+        car = Car(StubBox2dCarBody())
         enemy1 = Enemy(0, 5, 1, 1)
         enemy2 = Enemy(5, 8, 1, 1)
         enemies = [enemy1, enemy2]
@@ -24,7 +24,7 @@ class WorldTest(unittest.TestCase):
 
     def testAllEnemiesDestroyed(self):
         box2dWorld = StubBox2dWorld()
-        car = Car(StubBox2dCarBody(), None)
+        car = Car(StubBox2dCarBody())
         enemy1 = Enemy(0, 5, 1, 1)
         enemy2 = Enemy(5, 8, 1, 1)
         enemies = [enemy1, enemy2]
@@ -38,7 +38,7 @@ class WorldTest(unittest.TestCase):
 
     def testWorldUpdate(self):
         box2dWorld = StubBox2dWorld()
-        car = Car(StubBox2dCarBody(), None)
+        car = Car(StubBox2dCarBody())
         enemy1 = Enemy(0, 5, 1, 1)
         enemy2 = Enemy(5, 8, 1, 1)
         enemies = [enemy1, enemy2]

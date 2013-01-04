@@ -5,11 +5,10 @@ carHeight = 1.0
 
 class Car(GameObject):
 
-    def __init__(self, box2dCarBody, movingStrategy):
+    def __init__(self, box2dCarBody):
         self.box2dCarBody = box2dCarBody
         x = box2dCarBody.GetPosition()[0] - carWidth / 2.0
         super(Car, self).__init__(x, 0, carWidth, carHeight)
-        self.movingStrategy = movingStrategy
         self.blowing = False
         
     def move(self, dx):
@@ -45,6 +44,9 @@ class Car(GameObject):
     
     def isSleeping(self):
         return self.box2dCarBody.IsSleeping()
+    
+    def setMovingStrategy(self, movingStrategy):
+        self.movingStrategy = movingStrategy
 
 class CarError(RuntimeError):
     pass

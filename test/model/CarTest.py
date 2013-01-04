@@ -5,8 +5,7 @@ class CarTest(unittest.TestCase):
 
     def testConstructor(self):
         body = StubBox2dCarBody()
-        cms = StubCarMovingStrategy()
-        car = Car(body, cms)
+        car = Car(body)
         self.assertEquals(4, car.getX())
         self.assertEquals(0, car.getY())
         self.assertEquals(2, car.getWidth())
@@ -16,7 +15,8 @@ class CarTest(unittest.TestCase):
     def testMoveCar(self):
         body = StubBox2dCarBody()
         cms = StubCarMovingStrategy()
-        car = Car(body, cms)
+        car = Car(body)
+        car.setMovingStrategy(cms)
         self.assertFalse(cms.moveCarCall)
         car.move(5)
         self.assertTrue(cms.moveCarCall)
@@ -25,8 +25,7 @@ class CarTest(unittest.TestCase):
         
     def testBlow(self):
         body = StubBox2dCarBody()
-        cms = StubCarMovingStrategy()
-        car = Car(body, cms)
+        car = Car(body)
         vector = (0, 1)
         position = (1, 0)
         car.blow(vector, position)
@@ -36,22 +35,18 @@ class CarTest(unittest.TestCase):
         
     def testTwiceBlow(self):
         body = StubBox2dCarBody()
-        cms = StubCarMovingStrategy()
-        car = Car(body, cms)
+        car = Car(body)
         car.blow((0, 1), (1, 0))
         self.assertRaises(CarError, lambda: car.blow((1, 0), (1, 2)))
         
     def testMoveCarAfterBlow(self):
-        body = StubBox2dCarBody()
-        cms = StubCarMovingStrategy()
-        car = Car(body, cms)
+        car = Car(StubBox2dCarBody())
+        car.setMovingStrategy(StubCarMovingStrategy())
         car.blow((0, 1), (1, 0))
         self.assertRaises(CarError, lambda: car.move(1))
         
     def testSetX(self):
-        body = StubBox2dCarBody()
-        cms = StubCarMovingStrategy()
-        car = Car(body, cms)
+        car = Car(StubBox2dCarBody())
         car.setX(4)
         self.assertEquals(4, car.getX())
 

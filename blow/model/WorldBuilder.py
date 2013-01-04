@@ -17,9 +17,9 @@ class WorldBuilder(object):
     def buildWorld(self):
         box2dWorld = self.createBox2dWorld()
         self.createGroundAndWalls(box2dWorld)
-        explosion = self.createBlankExplosion()
-        car = self.createCar(box2dWorld, explosion)
-        self.bindCarToExplosion(explosion, car)
+        explosion = self.createExplosion()
+        car = self.createCar(box2dWorld)
+        self.bindCarAndExplosion(explosion, car)
         self.createEnemies(box2dWorld)
         self.createEnemyContactListener(box2dWorld)
         
@@ -53,17 +53,10 @@ class WorldBuilder(object):
         shape.SetAsBox(1.0, self.worldHeight)
         box2dWorld.CreateBody(bodyDef).CreateShape(shape)
     
-    def createBlankExplosion(self):
+    def createExplosion(self):
         return Explosion(self.worldWidth / 2.0)
     
-    def createCar(self, box2dWorld, explosion):
-        box2dCarBody = self.createCarBody(box2dWorld)
-        car = Car(box2dCarBody, CarMovingStrategy(self.worldWidth, explosion))
-        box2dCarBody.SetUserData(car)
-        
-        return car
-    
-    def createCarBody(self, box2dWorld):
+    def createCar(self, box2dWorld):
         bodyDef = b2BodyDef()
         bodyDef.position = (self.worldWidth / 2.0, carHeight / 2.0)
         box2dCarBody = box2dWorld.CreateBody(bodyDef)
@@ -72,10 +65,13 @@ class WorldBuilder(object):
         shape.density = 1.0
         box2dCarBody.CreateShape(shape)
         box2dCarBody.SetMassFromShapes()
+        car = Car(box2dCarBody)
+        box2dCarBody.SetUserData(car)
         
-        return box2dCarBody
+        return car
     
-    def bindCarToExplosion(self, explosion, car):
+    def bindCarAndExplosion(self, explosion, car):
+        car.setMovingStrategy(CarMovingStrategy(self.worldWidth, explosion))
         explosion.setBlowingObject(car)
         explosion.setMovingStrategy(ExplosionMovingStrategy(car))
     
