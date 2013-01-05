@@ -84,7 +84,7 @@ class UnitJoystickManager(object):
 
 #m = UnitJoystickManager(100) # raise error
 
-m = UnitJoystickManager()
+#m = UnitJoystickManager()
 # raw_input()
-print m.getState()
+#print m.getState()
 
