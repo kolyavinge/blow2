@@ -1,13 +1,13 @@
 import os
 from blow.input.JoystickState import *
 
-class UnitJoystickManager(object):
+class UnixJoystick(object):
     
     def __init__(self, joyNumber=0):
         try:
             jsFile = '/dev/input/js{0}'.format(joyNumber)
             self.jfd = os.open(jsFile, os.O_RDONLY | os.O_NONBLOCK)  # non-blocking read
-            self.action = os.read(self.jfd, 1024)  # skip init state
+            os.read(self.jfd, 1024)  # skip init state
         except(OSError):
             raise JoystickError('joystick "{0}" not found'.format(jsFile))
     
@@ -82,9 +82,9 @@ class UnitJoystickManager(object):
         return ord(self.action[byte])
 
 
-#m = UnitJoystickManager(100) # raise error
+#m = UnixJoystick(100) # raise error
 
-#m = UnitJoystickManager()
-# raw_input()
+#m = UnixJoystick()
+#raw_input()
 #print m.getState()
 

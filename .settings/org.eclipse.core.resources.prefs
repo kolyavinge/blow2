@@ -1,2 +1,9 @@
 eclipse.preferences.version=1
+encoding//blow/app/Program.py=utf-8
+encoding//blow/input/GameController.py=utf-8
+encoding//blow/input/InputManager.py=utf-8
 encoding//blow/model/WorldBuilder.py=utf-8
+encoding//blow/view/CarView.py=utf-8
+encoding//blow/view/EnemyView.py=utf-8
+encoding//blow/view/ExplosionView.py=utf-8
+encoding//blow/view/WorldView.py=utf-8

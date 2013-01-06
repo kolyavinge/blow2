@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from lib.Box2D import *
+from lib.box2d.Box2D import *
 from blow.model.Car import *
 from blow.model.CarMovingStrategy import *
 from blow.model.Enemy import *

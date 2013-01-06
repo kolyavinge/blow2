@@ -15,6 +15,38 @@ class ExplosionTest(unittest.TestCase):
         self.assertEquals(ExplosionVolume_Normal, explosion.getVolume())
         explosion.setVolume(ExplosionVolume_Low)
         self.assertEquals(ExplosionVolume_Low, explosion.getVolume())
+    
+    def testSetPrevVolume(self):
+        explosion = Explosion(2)
+        self.assertEquals(ExplosionVolume_Normal, explosion.getVolume())
+        explosion.setPrevVolume()
+        self.assertEquals(ExplosionVolume_Low, explosion.getVolume())
+        explosion.setPrevVolume()
+        self.assertEquals(ExplosionVolume_Hight, explosion.getVolume())
+        explosion.setPrevVolume()
+        self.assertEquals(ExplosionVolume_Normal, explosion.getVolume())
+    
+    def testSetNextVolume(self):
+        explosion = Explosion(2)
+        self.assertEquals(ExplosionVolume_Normal, explosion.getVolume())
+        explosion.setNextVolume()
+        self.assertEquals(ExplosionVolume_Hight, explosion.getVolume())
+        explosion.setNextVolume()
+        self.assertEquals(ExplosionVolume_Low, explosion.getVolume())
+        explosion.setNextVolume()
+        self.assertEquals(ExplosionVolume_Normal, explosion.getVolume())
+    
+    def testSetPrevVolumeOnBlowingExplosion(self):
+        explosion = Explosion(2)
+        explosion.setBlowingObject(StubBlowingObject())
+        explosion.blow()
+        self.assertRaises(ExplosionError, lambda: explosion.setPrevVolume())
+        
+    def testSetNextVolumeOnBlowingExplosion(self):
+        explosion = Explosion(2)
+        explosion.setBlowingObject(StubBlowingObject())
+        explosion.blow()
+        self.assertRaises(ExplosionError, lambda: explosion.setNextVolume())
         
     def testBlow(self):
         explosion = Explosion(2)
