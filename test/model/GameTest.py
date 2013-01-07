@@ -36,6 +36,18 @@ class GameTest(unittest.TestCase):
         game.nextWorld()
         
         self.assertSize((15, 25), game.getWorld())
+    
+#    def testOnChangeWorld(self):
+#        onChangeWorldCall = False
+##        def onChangeWorld(world):
+##            onChangeWorldCall = True
+#        game = Game([ [(10, 20), []], [(10, 20), []] ])
+#        game.onChangeWorld = lambda(world): onChangeWorldCall = True
+#        game.getWorld().getExplosion().blow()
+#        self.manyUpdates(game.getWorld())
+#        self.assertFalse(onChangeWorldCall)
+#        game.nextWorld()
+#        self.assertTrue(onChangeWorldCall)
         
     def testNextWorldNonComplete(self):
         game = Game([ [(100, 20), [(1, 10, 1, 1)]] ])
@@ -52,7 +64,7 @@ class GameTest(unittest.TestCase):
         self.assertEquals(GameState_AllLevelsCompleted, game.getState())
         
     def manyUpdates(self, world):
-        for _ in range(0, 100):
+        for _ in range(0, 1000):
             world.update()
         
     def assertPosition(self, pos, obj):

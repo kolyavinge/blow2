@@ -28,8 +28,8 @@ class WorldBuilder(object):
     def createBox2dWorld(self):
         enviroment = b2AABB()
         enviroment.lowerBound = (-10.0, -10.0)
-        enviroment.upperBound = (self.worldWidth + 10.0, 2.0 * self.worldHeight)
-        gravity = (0.0, -1.0)
+        enviroment.upperBound = (self.worldWidth + 10.0, 100.0 * self.worldHeight)
+        gravity = (0.0, -50.0)
         doSleep = True
         
         return b2World(enviroment, gravity, doSleep)

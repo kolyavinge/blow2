@@ -1,4 +1,5 @@
 import unittest
+from blow.model.GameObject import *
 from blow.model.Explosion import *
 
 class ExplosionTest(unittest.TestCase):
@@ -49,16 +50,17 @@ class ExplosionTest(unittest.TestCase):
         self.assertRaises(ExplosionError, lambda: explosion.setNextVolume())
         
     def testBlow(self):
-        explosion = Explosion(2)
+        explosion = Explosion(1.5)
         blowingObject = StubBlowingObject()
+        blowingObject.setPosition(1.0, 0.0)
         explosion.setBlowingObject(blowingObject)
         explosion.setVolume(ExplosionVolume_Hight)
         self.assertFalse(blowingObject.blowCall)
         explosion.blow()
         self.assertTrue(explosion.isBlowing())
         self.assertTrue(blowingObject.blowCall)
-        self.assertEquals((0, ExplosionVolume_Hight), blowingObject.vector)
-        self.assertEquals((2, 0), blowingObject.position)
+        self.assertEquals((0.0, ExplosionVolume_Hight), blowingObject.blowVector)
+        self.assertEquals((1.5, 1.0), blowingObject.blowPosition)
         
     def testTwiceBlow(self):
         explosion = Explosion(2)
@@ -94,14 +96,18 @@ class ExplosionTest(unittest.TestCase):
         explosion.setX(4)
         self.assertEquals(4, explosion.getX())
 
-class StubBlowingObject(object):
+class StubBlowingObject(GameObject):
     
     def __init__(self):
+        super(StubBlowingObject, self).__init__(0.0, 0.0, 1.0, 1.0)
         self.blowCall = False
+        
+    def setPosition(self, x, y):
+        self.x, self.y = x, y
     
     def blow(self, vector, position):
         self.blowCall = True
-        self.vector, self.position = vector, position
+        self.blowVector, self.blowPosition = vector, position
 
 class StubExplosionMovingStrategy(object):
     

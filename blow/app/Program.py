@@ -20,7 +20,7 @@ wallImagePath = resourcePath + 'wall.png'
 carImagePath = resourcePath + 'car.png'
 enemyImagePath = resourcePath + 'enemy.png'
 explosionImagePath = resourcePath + 'explosion.png'
-updateWorldInerval = 0.1
+updateWorldInerval = 0.01
 
 class Program(object):
     
@@ -62,7 +62,7 @@ class Program(object):
         wallImage = image.load(wallImagePath)
         self.worldView = WorldView(self.game.getWorld(), offsetX, q, backgroundImage, wallImage, childWorldViews)
         
-        gameController = GameController(self.game, self.worldView)
+        gameController = GameController(self.game)
         
         joy = UnixJoystick()
         self.inputManager = InputManager(gameController, joy)

@@ -8,6 +8,7 @@ class UnixJoystick(object):
             jsFile = '/dev/input/js{0}'.format(joyNumber)
             self.jfd = os.open(jsFile, os.O_RDONLY | os.O_NONBLOCK)  # non-blocking read
             os.read(self.jfd, 1024)  # skip init state
+            self.joyState = JoystickState()
         except(OSError):
             raise JoystickError('joystick "{0}" not found'.format(jsFile))
     
@@ -22,34 +23,33 @@ class UnixJoystick(object):
             return False
     
     def getState(self):
-        joyState = JoystickState()
         while self.readAction():
             # button
             if self.isButton():
                 if self.isPressed():
-                    joyState.pressButton(self.getButtonNumber())
+                    self.joyState.pressButton(self.getButtonNumber())
                 else:
-                    joyState.releaseButton(self.getButtonNumber())
+                    self.joyState.releaseButton(self.getButtonNumber())
             # axis x
             elif self.isAxisX():
                 if self.isRight():
-                    joyState.pressRight()
+                    self.joyState.pressRight()
                 elif self.isLeft():
-                    joyState.pressLeft()
+                    self.joyState.pressLeft()
                 else:
-                    joyState.releaseRight()
-                    joyState.releaseLeft()
+                    self.joyState.releaseRight()
+                    self.joyState.releaseLeft()
             # axis y
             elif self.isAxisY():
                 if self.isDown():
-                    joyState.pressDown()
+                    self.joyState.pressDown()
                 elif self.isUp():
-                    joyState.pressUp()
+                    self.joyState.pressUp()
                 else:
-                    joyState.releaseDown()
-                    joyState.releaseUp()
+                    self.joyState.releaseDown()
+                    self.joyState.releaseUp()
 
-        return joyState
+        return self.joyState
 
     def isButton(self):
         return self.getActionByte(6) == 1

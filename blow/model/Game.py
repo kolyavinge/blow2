@@ -11,6 +11,7 @@ class Game(object):
         self.state = GameState_Continue
         self.currentWorldIndex = 0
         self.__setCurrentWorld()
+        self.onChangeWorld = None
     
     def getWorld(self):
         return self.world
@@ -28,6 +29,8 @@ class Game(object):
         if self.hasNextWorld():
             self.currentWorldIndex += 1
             self.__setCurrentWorld()
+            if self.onChangeWorld != None:
+                self.onChangeWorld(self.world)
         else:    
             self.state = GameState_AllLevelsCompleted
     
@@ -37,7 +40,7 @@ class Game(object):
     def hasNextWorld(self):
         return self.currentWorldIndex + 1 < len(self.worldsList)
 
-
+    
 class GameError(RuntimeError):
     pass
 

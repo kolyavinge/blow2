@@ -8,18 +8,16 @@ class InputManager(object):
     
     def pollInputDevices(self):
         state = self.joy.getState()
-        
         # car move
         if state.isLeftPressed():
-            self.controller.moveCar(-0.5)
+            self.controller.moveCar(-0.2)
         elif state.isRightPressed():
-            self.controller.moveCar(0.5)
+            self.controller.moveCar(0.2)
         # explosion move
         elif state.isUpPressed():
-            self.controller.moveExplosion(0.5)
+            self.controller.moveExplosion(0.1)
         elif state.isDownPressed():
-            self.controller.moveExplosion(-0.5)
-        
+            self.controller.moveExplosion(-0.1)
         # switch explosion volume
         if state.isButtonPressed(5):
             self.controller.nextExplosionVolume()
@@ -34,5 +32,3 @@ class InputManager(object):
         # reset world
         elif state.isButtonPressed(7):
             self.controller.resetWorld()
-            
-            

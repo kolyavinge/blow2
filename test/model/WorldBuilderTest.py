@@ -83,11 +83,11 @@ class WorldBuilderTest(unittest.TestCase):
         world.getExplosion().setVolume(ExplosionVolume_Hight)
         world.getExplosion().blow()
         carY = []
-        for _ in range(0, 100):
+        for _ in range(0, 1000):
             world.update()
             carY.append(world.getCar().getY())
         maxCarY = max(carY)
-        self.assertCarY(maxCarY, 9.0, 10.0)
+        self.assertCarY(maxCarY, 15.0, 20.0)
         
     def testNormalExplosion(self):
         builder = WorldBuilder()
@@ -96,11 +96,11 @@ class WorldBuilderTest(unittest.TestCase):
         world.getExplosion().setVolume(ExplosionVolume_Normal)
         world.getExplosion().blow()
         carY = []
-        for _ in range(0, 100):
+        for _ in range(0, 1000):
             world.update()
             carY.append(world.getCar().getY())
         maxCarY = max(carY)
-        self.assertCarY(maxCarY, 6.0, 7.5)
+        self.assertCarY(maxCarY, 8.0, 15.0)
     
     def testLowExplosion(self):
         builder = WorldBuilder()
@@ -109,11 +109,11 @@ class WorldBuilderTest(unittest.TestCase):
         world.getExplosion().setVolume(ExplosionVolume_Low)
         world.getExplosion().blow()
         carY = []
-        for _ in range(0, 100):
+        for _ in range(0, 1000):
             world.update()
             carY.append(world.getCar().getY())
         maxCarY = max(carY)
-        self.assertCarY(maxCarY, 3.0, 5.0)
+        self.assertCarY(maxCarY, 6.0, 8.0)
         
     def testEnemyDestroy(self):
         builder = WorldBuilder()
@@ -122,7 +122,7 @@ class WorldBuilderTest(unittest.TestCase):
         world = builder.buildWorld()
         world.getExplosion().setVolume(ExplosionVolume_Hight)
         world.getExplosion().blow()
-        for _ in range(0, 100):
+        for _ in range(0, 1000):
             world.update()
         self.assertTrue(world.allEnemiesDestroyed())
         self.assertEquals(1, world.getEnemiesCount())

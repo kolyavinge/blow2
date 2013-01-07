@@ -1,6 +1,10 @@
-ExplosionVolume_Low = 3.5
-ExplosionVolume_Normal = 4.0
-ExplosionVolume_Hight = 4.8
+# -*- coding: utf-8 -*-
+
+from blow.model.Geometry import getMoveVectorPoint
+
+ExplosionVolume_Low = 50.0
+ExplosionVolume_Normal = 60.0
+ExplosionVolume_Hight = 80.0
 
 class Explosion(object):
     
@@ -14,12 +18,17 @@ class Explosion(object):
             self.movingStrategy.moveExplosion(self, dx)
         else:
             raise ExplosionError('you cant move blowing explosion')
-    
+
     def blow(self):
         if not self.blowing:
             self.blowing = True
-            vector = (0, self.volume)
-            position = (self.getX(), self.getY())
+            # рассчитываем направление взрыва
+            vector = getMoveVectorPoint(self.getX() - self.blowingObject.getCenterX(), self.getY() - self.blowingObject.getCenterY())
+            # умножаем вектор на величину взрывчатки 
+            vector = (self.volume * vector[0], self.volume * vector[1])
+            # рассчитываем точку приложения силы взрыва
+            position = (self.blowingObject.getCenterX(), self.blowingObject.getY() + self.blowingObject.getHeight())
+            # радуемся
             self.blowingObject.blow(vector, position)
         else:
             raise ExplosionError('you cant blow blowing explosion')
