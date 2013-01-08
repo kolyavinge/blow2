@@ -38,3 +38,9 @@ class GameControllerTest(unittest.TestCase):
         self.controller.blow()
         self.controller.blow()
         # no exception and errors !
+        
+    def testNextWorldOnNonCompletedWorld(self):
+        self.game = Game([[(8, 9), [(1, 1, 1, 1)]]])
+        self.controller = GameController(self.game)
+        self.controller.nextWorld()
+        # no exception and errors !

@@ -9,8 +9,6 @@ from blow.input.UnixJoystick import *
 from blow.input.GameController import *
 from blow.input.InputManager import *
 import pyglet
-from pyglet import image
-from pyglet.window import Window
 
 windowWidth = 1024
 windowHeight = 768
@@ -32,44 +30,51 @@ class Program(object):
         self.window.clear()
         self.worldView.draw()
     
-    def run(self):
-        self.game = createGame()
-        
-        qx = windowWidth / self.game.getWorld().getWidth()
-        qy = windowHeight / self.game.getWorld().getHeight()
-        q = qx if qx < qy else qy
-        offsetX = (windowWidth - q * self.game.getWorld().getWidth()) / 2.0
+    def getSizeFactor(self, world):
+        qx = windowWidth / world.getWidth()
+        qy = windowHeight / world.getHeight()
+        return qx if qx < qy else qy
+    
+    def getOffsetX(self, world, sizeFactor):
+        return (windowWidth - sizeFactor * world.getWidth()) / 2.0
+    
+    def changeWorld(self, world):
+        sizeFactor = self.getSizeFactor(world)
+        offsetX = self.getOffsetX(world, sizeFactor)
         
         childWorldViews = []
         
         explosionImage = pyglet.image.load(explosionImagePath)
         explosionSprite = pyglet.sprite.Sprite(explosionImage)
-        explosionView = ExplosionView(self.game.getWorld().getExplosion(), offsetX, q, explosionSprite)
+        explosionView = ExplosionView(world.getExplosion(), offsetX, sizeFactor, explosionSprite)
         childWorldViews.append(explosionView)
         
         carImage = pyglet.image.load(carImagePath)
         carSprite = pyglet.sprite.Sprite(carImage)
-        carView = CarView(self.game.getWorld().getCar(), offsetX, q, carSprite)
+        carView = CarView(world.getCar(), offsetX, sizeFactor, carSprite)
         childWorldViews.append(carView)
         
         enemyImage = pyglet.image.load(enemyImagePath)
-        for enemy in self.game.getWorld().getEnemies():
+        for enemy in world.getEnemies():
             enemySprite = pyglet.sprite.Sprite(enemyImage)
-            enemyView = EnemyView(enemy, offsetX, q, enemySprite)
+            enemyView = EnemyView(enemy, offsetX, sizeFactor, enemySprite)
             childWorldViews.append(enemyView)
         
-        backgroundImage = image.load(backgroundImagePath)
-        wallImage = image.load(wallImagePath)
-        self.worldView = WorldView(self.game.getWorld(), offsetX, q, backgroundImage, wallImage, childWorldViews)
+        backgroundImage = pyglet.image.load(backgroundImagePath)
+        wallImage = pyglet.image.load(wallImagePath)
+        self.worldView = WorldView(world, offsetX, sizeFactor, backgroundImage, wallImage, childWorldViews)
         
         gameController = GameController(self.game)
         
         joy = UnixJoystick()
         self.inputManager = InputManager(gameController, joy)
         
-        self.window = Window(windowWidth, windowHeight)
+    def run(self):
+        self.game = createGame()
+        self.game.onChangeWorld = self.changeWorld
+        self.changeWorld(self.game.getWorld())
+        self.window = pyglet.window.Window(windowWidth, windowHeight)
         self.window.on_draw = self.drawScene
-
         pyglet.clock.schedule_interval(self.updateWorld, updateWorldInerval)
         pyglet.app.run()
 

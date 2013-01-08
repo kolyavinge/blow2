@@ -26,7 +26,8 @@ class GameController(object):
             self.game.getWorld().getExplosion().blow()
         
     def nextWorld(self):
-        self.game.nextWorld()
+        if self.game.getWorld().isCompleted():
+            self.game.nextWorld()
     
     def resetWorld(self):
         self.game.resetWorld()

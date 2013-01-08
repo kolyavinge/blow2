@@ -12,6 +12,9 @@ class UnixJoystick(object):
         except(OSError):
             raise JoystickError('joystick "{0}" not found'.format(jsFile))
     
+    def __del__(self):
+        self.release()
+    
     def release(self):
         os.close(self.jfd)
     

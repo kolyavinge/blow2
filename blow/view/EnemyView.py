@@ -2,15 +2,15 @@
 
 class EnemyView(object):
     
-    def __init__(self, enemy, offsetX, q, enemySprite):
+    def __init__(self, enemy, offsetX, sizeFactor, enemySprite):
         self.enemy = enemy
         self.offsetX = offsetX
-        self.q = q
+        self.sizeFactor = sizeFactor
         self.enemySprite = enemySprite
-        self.enemySprite.scale = (q * enemy.getWidth()) / float(enemySprite.width)
+        self.enemySprite.scale = (sizeFactor * enemy.getWidth()) / float(enemySprite.width)
     
     def draw(self):
         if not self.enemy.isDestroyed():
-            self.enemySprite.x = self.offsetX + self.q * self.enemy.getX()
-            self.enemySprite.y = self.q * self.enemy.getY()
+            self.enemySprite.x = self.offsetX + self.sizeFactor * self.enemy.getX()
+            self.enemySprite.y = self.sizeFactor * self.enemy.getY()
             self.enemySprite.draw()

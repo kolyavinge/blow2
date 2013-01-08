@@ -37,18 +37,6 @@ class GameTest(unittest.TestCase):
         
         self.assertSize((15, 25), game.getWorld())
     
-#    def testOnChangeWorld(self):
-#        onChangeWorldCall = False
-##        def onChangeWorld(world):
-##            onChangeWorldCall = True
-#        game = Game([ [(10, 20), []], [(10, 20), []] ])
-#        game.onChangeWorld = lambda(world): onChangeWorldCall = True
-#        game.getWorld().getExplosion().blow()
-#        self.manyUpdates(game.getWorld())
-#        self.assertFalse(onChangeWorldCall)
-#        game.nextWorld()
-#        self.assertTrue(onChangeWorldCall)
-        
     def testNextWorldNonComplete(self):
         game = Game([ [(100, 20), [(1, 10, 1, 1)]] ])
         game.getWorld().getExplosion().blow()
@@ -72,6 +60,3 @@ class GameTest(unittest.TestCase):
         
     def assertSize(self, size, obj):
         self.assertEquals(size, (obj.getWidth(), obj.getHeight()))
-        
-        
-        

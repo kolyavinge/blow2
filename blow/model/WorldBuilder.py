@@ -87,7 +87,7 @@ class WorldBuilder(object):
         enemyBody = box2dWorld.CreateBody(bodyDef)
         shape = b2PolygonDef()
         shape.SetAsBox(enemy.getWidth() / 2.0, enemy.getHeight() / 2.0)
-        shape.density = 0.0001
+        shape.density = 0.001
         enemyBody.CreateShape(shape)
         enemyBody.SetMassFromShapes()
         enemyBody.SetUserData(enemy)

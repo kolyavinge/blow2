@@ -12,7 +12,7 @@ class World(object):
         self.box2dWorld.Step(1.0 / 60.0, 1, 1)
 
     def isCompleted(self):
-        return self.car.isBlowed() and self.car.isSleeping() and self.allEnemiesDestroyed()
+        return self.allEnemiesDestroyed()
 
     def allEnemiesDestroyed(self):
         result = True
