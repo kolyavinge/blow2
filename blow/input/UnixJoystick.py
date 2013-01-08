@@ -26,31 +26,32 @@ class UnixJoystick(object):
             return False
     
     def getState(self):
+        self.joyState.setPressedAsHolded()
         while self.readAction():
             # button
             if self.isButton():
                 if self.isPressed():
-                    self.joyState.pressButton(self.getButtonNumber())
+                    self.joyState.press(self.getButton())
                 else:
-                    self.joyState.releaseButton(self.getButtonNumber())
+                    self.joyState.release(self.getButton())
             # axis x
             elif self.isAxisX():
                 if self.isRight():
-                    self.joyState.pressRight()
+                    self.joyState.press(JoystickButton_Right)
                 elif self.isLeft():
-                    self.joyState.pressLeft()
+                    self.joyState.press(JoystickButton_Left)
                 else:
-                    self.joyState.releaseRight()
-                    self.joyState.releaseLeft()
+                    self.joyState.release(JoystickButton_Right)
+                    self.joyState.release(JoystickButton_Left)
             # axis y
             elif self.isAxisY():
                 if self.isDown():
-                    self.joyState.pressDown()
+                    self.joyState.press(JoystickButton_Down)
                 elif self.isUp():
-                    self.joyState.pressUp()
+                    self.joyState.press(JoystickButton_Up)
                 else:
-                    self.joyState.releaseDown()
-                    self.joyState.releaseUp()
+                    self.joyState.release(JoystickButton_Down)
+                    self.joyState.release(JoystickButton_Up)
 
         return self.joyState
 
@@ -60,8 +61,16 @@ class UnixJoystick(object):
     def isPressed(self):
         return self.getActionByte(4) == 1
     
-    def getButtonNumber(self):
-        return self.getActionByte(7)
+    def getButton(self):
+        button = self.getActionByte(7)
+        if   button == 0: return JoystickButton_0
+        elif button == 1: return JoystickButton_1
+        elif button == 2: return JoystickButton_2
+        elif button == 3: return JoystickButton_3
+        elif button == 4: return JoystickButton_4
+        elif button == 5: return JoystickButton_5
+        elif button == 6: return JoystickButton_6
+        elif button == 7: return JoystickButton_7
     
     def isAxisX(self):
         return self.getActionByte(7) == 0
@@ -85,9 +94,12 @@ class UnixJoystick(object):
         return ord(self.action[byte])
 
 
-#m = UnixJoystick(100) # raise error
+# m = UnixJoystick(100) # raise error
 
 #m = UnixJoystick()
 #raw_input()
 #print m.getState()
-
+#raw_input()
+#print m.getState()
+#raw_input()
+#print m.getState()

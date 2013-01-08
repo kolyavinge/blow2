@@ -3,64 +3,71 @@ from blow.input.JoystickState import *
 
 class JoystickStateTest(unittest.TestCase):
     
+    def setUp(self):
+        self.joy = JoystickState()
+    
     def testConstructor(self):
-        joy = JoystickState()
-        self.assertFalse(joy.isLeftPressed())
-        self.assertFalse(joy.isRightPressed())
-        self.assertFalse(joy.isUpPressed())
-        self.assertFalse(joy.isDownPressed())
-        self.assertEquals([], joy.getPressedButtons())
-        
-    def testLeftPressRelease(self):
-        joy = JoystickState()
-        joy.pressLeft()
-        self.assertTrue(joy.isLeftPressed())
-        joy.releaseLeft()
-        self.assertFalse(joy.isLeftPressed())
-        
-    def testRightPressRelease(self):
-        joy = JoystickState()
-        joy.pressRight()
-        self.assertTrue(joy.isRightPressed())
-        joy.releaseRight()
-        self.assertFalse(joy.isRightPressed())
-        
-    def testUptPressRelease(self):
-        joy = JoystickState()
-        joy.pressUp()
-        self.assertTrue(joy.isUpPressed())
-        joy.releaseUp()
-        self.assertFalse(joy.isUpPressed())
-        
-    def testDownPressRelease(self):
-        joy = JoystickState()
-        joy.pressDown()
-        self.assertTrue(joy.isDownPressed())
-        joy.releaseDown()
-        self.assertFalse(joy.isDownPressed())
+        self.assertEquals([], self.joy.getPressed())
+        self.assertEquals([], self.joy.getHolded())
 
-    def testPressReleaseButton(self):
-        joy = JoystickState()
-        joy.pressButton(2)
-        self.assertTrue(joy.isButtonPressed(2))
-        joy.releaseButton(2)
-        self.assertFalse(joy.isButtonPressed(2))
+    def testPressHoldRelease(self):
+        self.joy.press(JoystickButton_Up)
+        self.assertTrue(self.joy.isPressed(JoystickButton_Up))
+        self.assertFalse(self.joy.isHolded(JoystickButton_Up))
+        self.assertFalse(self.joy.isReleased(JoystickButton_Up))
         
-    def testGetPressedButtons(self):
-        joy = JoystickState()
-        joy.pressButton(2)
-        joy.pressButton(3)
-        self.assertEquals([2, 3], joy.getPressedButtons())
+        self.joy.hold(JoystickButton_Up)
+        self.assertFalse(self.joy.isPressed(JoystickButton_Up))
+        self.assertTrue(self.joy.isHolded(JoystickButton_Up))
+        self.assertFalse(self.joy.isReleased(JoystickButton_Up))
+        
+        self.joy.release(JoystickButton_Up)
+        self.assertFalse(self.joy.isPressed(JoystickButton_Up))
+        self.assertFalse(self.joy.isHolded(JoystickButton_Up))
+        self.assertTrue(self.joy.isReleased(JoystickButton_Up))
+
+    def testPressRelease(self):
+        self.joy.press(JoystickButton_Up)
+        self.assertTrue(self.joy.isPressed(JoystickButton_Up))
+        self.assertFalse(self.joy.isHolded(JoystickButton_Up))
+        self.assertFalse(self.joy.isReleased(JoystickButton_Up))
+        
+        self.joy.release(JoystickButton_Up)
+        self.assertFalse(self.joy.isPressed(JoystickButton_Up))
+        self.assertFalse(self.joy.isHolded(JoystickButton_Up))
+        self.assertTrue(self.joy.isReleased(JoystickButton_Up))
+
+    def testPressTwice(self):
+        self.joy.press(JoystickButton_Up)
+        self.joy.press(JoystickButton_Up)
+        self.assertTrue(self.joy.isPressed(JoystickButton_Up))
+        self.assertEquals([JoystickButton_Up], self.joy.getPressed())
     
-    def testTwicePress(self):
-        joy = JoystickState()
-        joy.pressButton(2)
-        joy.pressButton(2)
-        self.assertEquals([2], joy.getPressedButtons())
+    def testSetPressedAsHolded(self):
+        self.joy.press(JoystickButton_Up)
+        self.joy.press(JoystickButton_1)
+        self.joy.setPressedAsHolded()
+        self.assertFalse(self.joy.isPressed(JoystickButton_Up))
+        self.assertFalse(self.joy.isPressed(JoystickButton_1))
+        self.assertTrue(self.joy.isHolded(JoystickButton_Up))
+        self.assertTrue(self.joy.isHolded(JoystickButton_1))
     
-    def testReleaseButton(self):
-        joy = JoystickState()
-        joy.releaseButton(2)
-        self.assertEquals([], joy.getPressedButtons())
+    def testSetPressedAsHolded2(self):
+        self.joy.press(JoystickButton_Up)
+        self.joy.setPressedAsHolded()
         
+        self.joy.press(JoystickButton_1)
+        self.joy.setPressedAsHolded()
         
+        self.assertTrue(self.joy.isHolded(JoystickButton_Up))
+        self.assertTrue(self.joy.isHolded(JoystickButton_1))
+        
+    def testHoldNotPressedButton(self):
+        self.assertRaises(JoystickError, lambda: self.joy.hold(JoystickButton_Up))
+    
+    def testPressHoldedButton(self):
+        self.joy.press(JoystickButton_Up)
+        self.joy.hold(JoystickButton_Up)
+        self.assertRaises(JoystickError, lambda: self.joy.press(JoystickButton_Up))
+
+
